@@ -84,4 +84,9 @@ header {
 .board-item {
   background-color: #f67280;
   border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13vh;
+  font-family: 'Dancing Script', cursive;
 }
