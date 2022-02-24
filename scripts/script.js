@@ -29,7 +29,17 @@ const gameBoard = (() => {
     );
   };
 
-  return { board, updateBoard, _checkRowWin, _checkColumnWin };
+  function _checkDiagonalWin(symbol) {
+    leftToRight = [board[0], board[4], board[8]];
+    rightToLeft = [board[2], board[4], board[6]];
+
+    return (
+      leftToRight.every((element) => element === symbol) ||
+      rightToLeft.every((element) => element === symbol)
+    );
+  };
+
+  return { board, updateBoard, _checkRowWin, _checkColumnWin, _checkDiagonalWin };
 })();
 
 const displayController = (() => {
