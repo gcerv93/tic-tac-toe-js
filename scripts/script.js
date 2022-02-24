@@ -15,6 +15,10 @@ const gameBoard = (() => {
     );
   };
 
+  function checkForFull() {
+    return board.every((element) => element === "X" || element === "O");
+  };
+
   function newBoard() {
     board = board.map((element => ''));
     return board;
@@ -50,7 +54,7 @@ const gameBoard = (() => {
     );
   };
 
-  return { board, updateBoard, checkWins, newBoard };
+  return { board, updateBoard, checkWins, newBoard, checkForFull };
 })();
 
 const displayController = (() => {
@@ -72,15 +76,21 @@ const displayController = (() => {
     gameController.newGame();
     overlay.classList.toggle('overlay');
     popupWindow.style.display = 'none';
-  })
+  });
 
   function displayWinner(winner) {
     popupWindow.style.display = 'flex';
     overlay.classList.toggle('overlay');
     winDisplay.textContent = winner.symbol;
-  }
+  };
 
-  return { updateDisplay, cells, displayWinner };
+  function displayTie() {
+    popupWindow.style.display = 'flex';
+    overlay.classList.toggle('overlay');
+    winDisplay.textContent = 'no one';
+  };
+
+  return { updateDisplay, cells, displayWinner, displayTie };
 })();
 
 const gameController = (() => {
@@ -88,11 +98,12 @@ const gameController = (() => {
   const playertwo = playerFactory('O');
   let currentPlayer = playerone;
 
-  // not finished
   function _handleWins() {
     if (gameBoard.checkWins(currentPlayer.symbol)) {
       _removeEventListeners();
       displayController.displayWinner(currentPlayer);
+    } else if (gameBoard.checkForFull()) {
+      displayController.displayTie();
     };
   };
 
