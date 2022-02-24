@@ -15,9 +15,21 @@ const gameBoard = (() => {
       board.slice(3, 6).every((element) => element === symbol) ||
       board.slice(6, 9).every((element) => element === symbol)
     );
-  }
+  };
 
-  return { board, updateBoard, _checkRowWin };
+  function _checkColumnWin(symbol) {
+    firstColumn = [board[0], board[3], board[6]];
+    secondColumn = [board[1], board[4], board[7]];
+    thirdColumn = [board[2], board[5], board[8]];
+
+    return (
+      firstColumn.every((element) => element === symbol) ||
+      secondColumn.every((element) => element === symbol) ||
+      thirdColumn.every((element) => element === symbol)
+    );
+  };
+
+  return { board, updateBoard, _checkRowWin, _checkColumnWin };
 })();
 
 const displayController = (() => {
