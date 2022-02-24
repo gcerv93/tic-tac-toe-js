@@ -3,7 +3,7 @@ const playerFactory = (symbol) => {
 };
 
 const gameBoard = (() => {
-  const board = ['', '', '', '', '', '', '', '', ''];
+  const board = newBoard();
 
   const updateBoard = (cell, symbol) => {
     board[cell] = symbol;
@@ -14,6 +14,10 @@ const gameBoard = (() => {
       _checkRowWin(symbol) || _checkColumnWin(symbol) || _checkDiagonalWin(symbol)
     );
   };
+
+  function newBoard() {
+    return ['', '', '', '', '', '', '', '', ''];
+  }
 
   function _checkRowWin(symbol) {
     return (
@@ -45,11 +49,15 @@ const gameBoard = (() => {
     );
   };
 
-  return { board, updateBoard, checkWins };
+  return { board, updateBoard, checkWins, newBoard };
 })();
 
 const displayController = (() => {
   const cells = document.querySelectorAll('[data-index]');
+  const winDisplay = document.querySelector('.winner');
+  const playAgainBtn = document.querySelector('.play-again');
+  const popupWindow = document.querySelector('.popup');
+  const overlay = document.querySelector('#overlay');
 
   // get sent a board and update the display with its values
   const updateDisplay = (board) => {
@@ -59,7 +67,13 @@ const displayController = (() => {
     });
   };
 
-  return { updateDisplay, cells };
+  function displayWinner(winner) {
+    popupWindow.style.display = 'flex';
+    overlay.classList.toggle('overlay');
+    winDisplay.textContent = winner.symbol;
+  }
+
+  return { updateDisplay, cells, displayWinner };
 })();
 
 const gameController = (() => {
@@ -71,6 +85,7 @@ const gameController = (() => {
   function _handleWins() {
     if (gameBoard.checkWins(currentPlayer.symbol)) {
       _removeEventListeners();
+      displayController.displayWinner(currentPlayer);
     };
   };
 
