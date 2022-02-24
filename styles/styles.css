@@ -94,3 +94,47 @@ header {
 .board-item:hover {
   background-color: #c06c84;
 }
+
+.popup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8b195;
+  width: 25vw;
+  height: 40vh;
+  margin: auto;
+  box-sizing: border-box;
+  padding: 2rem;
+  border-radius: 10px;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.popup p {
+  font-family: 'Dancing Script', cursive;
+  font-size: 5vh;
+}
+
+.popup button {
+  border: none;
+  font-size: 1.3rem;
+  border-radius: 10px;
+  padding: 0.5rem;
+  background-color: #6c5b7b;
+  cursor: pointer;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.5);
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
