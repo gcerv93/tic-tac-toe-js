@@ -3,8 +3,13 @@ const playerFactory = (name, symbol) => {
 };
 
 const gameBoard = (() => {
-  const board = ['', '', '', '', '', '', '', '', ''];
-  return { board };
+  const board = [null, null, null, null, null, null, null, null, null];
+
+  const updateBoard = (cell, symbol) => {
+    board[cell] = symbol;
+  };
+
+  return { board, updateBoard };
 })();
 
 const displayController = (() => {
@@ -18,6 +23,3 @@ const displayController = (() => {
   return { updateDisplay };
 })();
 
-// temp for checking display
-// const board = gameBoard.board;
-// displayController.updateDisplay(board);
