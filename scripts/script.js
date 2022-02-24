@@ -9,7 +9,15 @@ const gameBoard = (() => {
     board[cell] = symbol;
   };
 
-  return { board, updateBoard };
+  function _checkRowWin(symbol) {
+    return (
+      board.slice(0, 3).every((element) => element === symbol) ||
+      board.slice(3, 6).every((element) => element === symbol) ||
+      board.slice(6, 9).every((element) => element === symbol)
+    );
+  }
+
+  return { board, updateBoard, _checkRowWin };
 })();
 
 const displayController = (() => {
