@@ -9,6 +9,12 @@ const gameBoard = (() => {
     board[cell] = symbol;
   };
 
+  function checkWins(symbol) {
+    return (
+      _checkRowWin(symbol) || _checkColumnWin(symbol) || _checkDiagonalWin(symbol)
+    );
+  };
+
   function _checkRowWin(symbol) {
     return (
       board.slice(0, 3).every((element) => element === symbol) ||
@@ -39,12 +45,13 @@ const gameBoard = (() => {
     );
   };
 
-  return { board, updateBoard, _checkRowWin, _checkColumnWin, _checkDiagonalWin };
+  return { board, updateBoard, checkWins };
 })();
 
 const displayController = (() => {
   const cells = document.querySelectorAll('[data-index]');
 
+  // get sent a board and update the display with its values
   const updateDisplay = (board) => {
     board.forEach((cell, index) => {
       const displayCell = document.querySelector(`[data-index="${index}"]`);
@@ -60,18 +67,37 @@ const gameController = (() => {
   const playertwo = playerFactory('O');
   let currentPlayer = playerone;
 
+  // not finished
+  function _handleWins() {
+    if (gameBoard.checkWins(currentPlayer.symbol)) {
+      _removeEventListeners();
+    };
+  };
+
+  // change the current player so that the correct symbol will display
   const _changeCurrPlayer = () => {
     currentPlayer = currentPlayer === playerone ? playertwo : playerone
-  }
+  };
 
+  // one turn === one click, equivalent to a turn handler
   const _clickHandler = (e) => {
     if (e.target.textContent === '') {
       gameBoard.updateBoard(e.target.dataset.index, currentPlayer.symbol);
       displayController.updateDisplay(gameBoard.board);
+      _handleWins();
       _changeCurrPlayer();
     };
   };
 
+  // to call when there's a win on the board
+  function _removeEventListeners() {
+    displayController.cells.forEach((cell) => {
+      cell.removeEventListener('click', _clickHandler);
+    });
+  };
+
+  // event listener for grid cells, in game so that the clickHandler can access
+  // the necessary data
   displayController.cells.forEach((cell) => {
     cell.addEventListener('click', _clickHandler);
   });
