@@ -3,7 +3,7 @@ const playerFactory = (symbol) => {
 };
 
 const gameBoard = (() => {
-  const board = newBoard();
+  let board = ['', '', '', '', '', '', '', '', ''];
 
   const updateBoard = (cell, symbol) => {
     board[cell] = symbol;
@@ -16,8 +16,9 @@ const gameBoard = (() => {
   };
 
   function newBoard() {
-    return ['', '', '', '', '', '', '', '', ''];
-  }
+    board = board.map((element => ''));
+    return board;
+  };
 
   function _checkRowWin(symbol) {
     return (
@@ -67,6 +68,12 @@ const displayController = (() => {
     });
   };
 
+  playAgainBtn.addEventListener('click', () => {
+    gameController.newGame();
+    overlay.classList.toggle('overlay');
+    popupWindow.style.display = 'none';
+  })
+
   function displayWinner(winner) {
     popupWindow.style.display = 'flex';
     overlay.classList.toggle('overlay');
@@ -111,9 +118,24 @@ const gameController = (() => {
     });
   };
 
+  // not sure why i am forced to overwrite gameBoard.board AND board in 
+  // gameBoard IIFE
+  function newGame() {
+    gameBoard.board = gameBoard.newBoard();
+    displayController.updateDisplay(gameBoard.board);
+    currentPlayer = playerone;
+    cellListeners();
+  };
+
   // event listener for grid cells, in game so that the clickHandler can access
   // the necessary data
-  displayController.cells.forEach((cell) => {
-    cell.addEventListener('click', _clickHandler);
-  });
+  const cellListeners = () => {
+    displayController.cells.forEach((cell) => {
+      cell.addEventListener('click', _clickHandler);
+    });
+  };
+
+  cellListeners();
+
+  return { newGame }
 })();
