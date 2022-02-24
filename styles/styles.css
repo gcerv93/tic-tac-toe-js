@@ -90,3 +90,7 @@ header {
   font-size: 13vh;
   font-family: 'Dancing Script', cursive;
 }
+
+.board-item:hover {
+  background-color: #c06c84;
+}
