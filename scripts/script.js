@@ -54,7 +54,14 @@ const gameBoard = (() => {
     );
   };
 
-  return { board, updateBoard, checkWins, newBoard, checkForFull };
+  // if i return the board, it is somehow different than the board declared up top
+  // so changing it doesn't change the one declared up top?? somehow
+  // so use getter to get the board and have it be consistent throughtout
+  function getBoard() {
+    return board;
+  }
+
+  return { updateBoard, checkWins, newBoard, checkForFull, getBoard };
 })();
 
 const displayController = (() => {
@@ -116,7 +123,7 @@ const gameController = (() => {
   const _clickHandler = (e) => {
     if (e.target.textContent === '') {
       gameBoard.updateBoard(e.target.dataset.index, currentPlayer.symbol);
-      displayController.updateDisplay(gameBoard.board);
+      displayController.updateDisplay(gameBoard.getBoard());
       _handleWins();
       _changeCurrPlayer();
     };
@@ -129,11 +136,9 @@ const gameController = (() => {
     });
   };
 
-  // not sure why i am forced to overwrite gameBoard.board AND board in 
-  // gameBoard IIFE
   function newGame() {
-    gameBoard.board = gameBoard.newBoard();
-    displayController.updateDisplay(gameBoard.board);
+    gameBoard.newBoard();
+    displayController.updateDisplay(gameBoard.getBoard());
     currentPlayer = playerone;
     cellListeners();
   };
